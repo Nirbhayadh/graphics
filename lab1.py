@@ -4,6 +4,7 @@ from OpenGL.GLU import *
 import math
 import numpy
 
+
 def bluePart():
     vertices1 = (
     (-0.02,0.38),
@@ -62,8 +63,10 @@ def redPart():
 
 
 def lowerCircle():
-    stepsize=10
-    radius=0.07
+    stepsize=16
+    x=numpy.arange(0.0, 1.0, 0.1)
+    print(x)
+    radius=0.08
     angle=2* math.pi  / stepsize
     ox,oy=0,0
     cx,cy=0.18,0.16
@@ -78,28 +81,15 @@ def lowerCircle():
         nyi= radius * math.sin(angle*(i+1))
         glVertex2f(nxi+cx,nyi+cy)
         glEnd()
-        ## Spikes of the Sun
-        if i == 0:          
-            spxi=(xi+nxi)/2 + 0.03
-            spyi=(yi+nyi)/2 + 0.03
-            glColor3f(1.0,1.0,1.0)
-            glBegin(GL_TRIANGLES)
-            glVertex2f(xi+cx,yi+cy)
-            glVertex2f(nxi+cx,nyi+cy)
-            glVertex2f(spxi+cx, spyi+cy)
-            glEnd()
-            d= math.pow(math.pow(spxi-nxi,2)+math.pow(spyi-nyi,2),1/2)
-            print(spxi, spyi, nxi, nyi)
-            print(d)
-        else:            
-            spxi=xi +  d* math.cos(angle*(i+1))
-            spyi=yi +  d* math.sin(angle*(i+1))
-            glColor3f(1.0,1.0,1.0)
-            glBegin(GL_TRIANGLES)
-            glVertex2f(xi+cx,yi+cy)
-            glVertex2f(nxi+cx,nyi+cy)
-            glVertex2f(spxi+cx, spyi+cy)
-            glEnd()
+        ## Sun Spikes   
+        spxi=  (0.03+radius)* math.cos(angle/2+angle *(i))
+        spyi=  (0.03+radius)* math.sin(angle/2+angle*(i))
+        glColor3f(1,1.0,1.0)
+        glBegin(GL_TRIANGLES)
+        glVertex2f(xi+cx,yi+cy)
+        glVertex2f(nxi+cx,nyi+cy)
+        glVertex2f(spxi+cx, spyi+cy)
+        glEnd()
         xi=nxi
         yi=nyi
 
@@ -126,15 +116,17 @@ def upperLowerCircle():
         yi=nyi
         glEnd()
 
-
 def upperUpperCircle():
-    stepsize=10
+    stepsize=14
+    x=numpy.arange(0.0, 1.0, 0.1)
+    print(x)
     radius=0.045
     angle=2* math.pi  / stepsize
     ox,oy=0,0
-    cx,cy=0.18, 0.56
+    cx,cy=0.18,0.56
     xi,yi=radius,oy
     spxi,spyi=0,0
+    
     for i in range(0,stepsize):
         glColor3f(1.0,1.0,1.0)
         glBegin(GL_TRIANGLES)
@@ -144,28 +136,15 @@ def upperUpperCircle():
         nyi= radius * math.sin(angle*(i+1))
         glVertex2f(nxi+cx,nyi+cy)
         glEnd()
-        ##Spikes of the Moon
-        if i == 0:          
-            spxi=(xi+nxi)/2 + 0.02
-            spyi=(yi+nyi)/2 + 0.02
-            glColor3f(1.0,1.0,1.0)
-            glBegin(GL_TRIANGLES)
-            glVertex2f(xi+cx,yi+cy)
-            glVertex2f(nxi+cx,nyi+cy)
-            glVertex2f(spxi+cx, spyi+cy)
-            glEnd()
-            d= math.pow(math.pow(spxi-nxi,2)+math.pow(spyi-nyi,2),1/2)
-            print(spxi, spyi, nxi, nyi)
-            print(d)
-        else:            
-            spxi=xi +  d* math.cos(angle*(i+1))
-            spyi=yi +  d* math.sin(angle*(i+1))
-            glColor3f(1.0,1.0,1.0)
-            glBegin(GL_TRIANGLES)
-            glVertex2f(xi+cx,yi+cy)
-            glVertex2f(nxi+cx,nyi+cy)
-            glVertex2f(spxi+cx, spyi+cy)
-            glEnd()
+        ## Moon Spikes   
+        spxi=  (0.01+radius)* math.cos(angle/2+angle *(i))
+        spyi=  (0.01+radius)* math.sin(angle/2+angle*(i))
+        glColor3f(1,1.0,1.0)
+        glBegin(GL_TRIANGLES)
+        glVertex2f(xi+cx,yi+cy)
+        glVertex2f(nxi+cx,nyi+cy)
+        glVertex2f(spxi+cx, spyi+cy)
+        glEnd()
         xi=nxi
         yi=nyi
 
@@ -186,7 +165,7 @@ def clearScreen():
 def main():
     glutInit()
     glutInitDisplayMode(GLUT_RGB)
-    glutInitWindowSize(420,420)
+    glutInitWindowSize(520,520)
     glutInitWindowPosition(100, 100)
     glutCreateWindow("Nirbhay Adhikari (02)")
     glutDisplayFunc(flag)
@@ -200,5 +179,4 @@ def main():
     glutMainLoop()   
 
 main()
-
 
