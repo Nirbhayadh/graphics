@@ -1,14 +1,17 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
-from math import floor
 
 windowSize = (500, 500)
 print(windowSize)
 
 # (1,1) to (19,19)
-division = 20
+division = 30
 x_stepsize = 2/division
 y_stepsize = 2/division
+
+
+def roundPartial(value, resolution):
+    return round(value / resolution) * resolution
 
 
 def Plot(x, y, g):
@@ -23,7 +26,7 @@ def Plot(x, y, g):
     glBegin(GL_POINTS)
     x = -1+x*x_stepsize
     # y = -1+y*y_stepsize
-    y = round(-1+y*y_stepsize, 1)
+    y = roundPartial(-1+y*y_stepsize, y_stepsize)
     glVertex2f(x, y)
     glEnd()
 
