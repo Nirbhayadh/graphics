@@ -5,13 +5,9 @@ windowSize = (500, 500)
 print(windowSize)
 
 # (1,1) to (19,19)
-division = 30
+division = 15
 x_stepsize = 2/division
 y_stepsize = 2/division
-
-
-def roundPartial(value, resolution):
-    return round(value / resolution) * resolution
 
 
 def Plot(x, y, g):
@@ -21,12 +17,11 @@ def Plot(x, y, g):
         glPointSize(3.0)
     else:
         glColor3f(1.0, 0.0, 0.0)
-        glPointSize(8.0)
+        glPointSize(5.0)
 
     glBegin(GL_POINTS)
     x = -1+x*x_stepsize
-    # y = -1+y*y_stepsize
-    y = roundPartial(-1+y*y_stepsize, y_stepsize)
+    y = -1+y*y_stepsize
     glVertex2f(x, y)
     glEnd()
 
@@ -37,34 +32,19 @@ def Points():
             Plot(i, j, 'p')
 
 
+def Actual(p1, p2):
+    glColor3f(0.0, 1.0, 0.0)
+    glPointSize(3.0)
+    glBegin(GL_LINES)
+    glVertex2f(-1+p1[0]*x_stepsize, -1+p1[1]*y_stepsize)
+    glVertex2f(-1+p2[0]*x_stepsize, -1+p2[1]*y_stepsize)
+    glEnd()
+
+
 def Line():
-    p1 = (1, 1)
-    p2 = (11, 15)
-    # p2 = (11, 1)
-    # p1 = (6, 6)
-    # p1 = (20, 10)
-    # p2 = (30, 18)
-
-    # p1 = (30, 18)
-    # p2 = (20, 10)
-
-    # p1 = (20, 10)
-    # p2 = (10, 18)
-
-    # p1 = (10, 18)
-    # p2 = (20, 10)
-
-    # p1 = (20, 10)
-    # p2 = (28, 22)
-
-    # p1 = (28, 22)
-    # p2 = (20, 10)
-
-    # p1 = (20, 10)
-    # p2 = (12, 22)
-
-    # p1 = (12, 22)
-    # p2 = (20, 10)
+    p2 = (1, 1)
+    p1 = (6, 10)
+    Actual(p1, p2)
 
     x, y = p1[0], p1[1]
     Plot(x, y, 'l')
@@ -142,7 +122,7 @@ def main():
     glutInitDisplayMode(GLUT_RGB)
     glutInitWindowSize(windowSize[0], windowSize[1])
     glutInitWindowPosition(500, 50)
-    glutCreateWindow("Nirbhay Adhikari (02)")
+    glutCreateWindow("Nirbhay Adhikari (02) BLA")
     glutDisplayFunc(BLA)
     glutMainLoop()
 
