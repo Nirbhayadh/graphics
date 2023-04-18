@@ -45,24 +45,24 @@ def Actual(cx, cy, radius):
     glEnd()
 
 
-def PlotSymmetry(x, y):
-    Plot(x, y, 'l')
-    Plot(y, x, 'l')
-    Plot(x, -y, 'l')
-    Plot(y, -x, 'l')
-    Plot(-x, -y, 'l')
-    Plot(-y, -x, 'l')
-    Plot(-x, y, 'l')
-    Plot(-y, x, 'l')
+def PlotSymmetry(x, y, cx, cy):
+    Plot(x+cx, y+cy, 'l')
+    Plot(y+cx, x+cy, 'l')
+    Plot(x+cx, -y+cy, 'l')
+    Plot(y+cx, -x+cy, 'l')
+    Plot(-x+cx, -y+cy, 'l')
+    Plot(-y+cx, -x+cy, 'l')
+    Plot(-x+cx, y+cy, 'l')
+    Plot(-y+cx, x+cy, 'l')
 
 
 def Circle():
-    cx, cy = 0, 0
+    cx, cy = 2, 2
     ox, oy = 0, 0
     radius = 4
     Actual(cx, cy, radius)
     x, y = ox, radius
-    PlotSymmetry(x+cx, y+cy)
+    PlotSymmetry(x, y, cx, cy)
     p0 = 5/4-radius
     pk = p0
     while (x < y):
@@ -73,7 +73,7 @@ def Circle():
             y = y-1
             pk = pk+2*x+1-2*y
         print(x, y)
-        PlotSymmetry(x, y)
+        PlotSymmetry(x, y, cx, cy)
 
 
 def MIDCIRCLE():
