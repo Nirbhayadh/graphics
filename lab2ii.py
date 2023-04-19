@@ -1,13 +1,15 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
+from prettytable import PrettyTable
 
 windowSize = (500, 500)
-print(windowSize)
 
 # (1,1) to (19,19)
 division = 15
 x_stepsize = 2/division
 y_stepsize = 2/division
+
+mytable = PrettyTable(["K", "Pk", "(X_k+1, Y_k+1)"])
 
 
 def Plot(x, y, g):
@@ -42,11 +44,12 @@ def Actual(p1, p2):
 
 
 def Line():
-    p2 = (1, 1)
-    p1 = (6, 10)
+    p1 = (5, 4)
+    p2 = (10, 10)
     Actual(p1, p2)
 
     x, y = p1[0], p1[1]
+    print(f"Initial Point: ({x},{y})")
     Plot(x, y, 'l')
     dx = p2[0]-p1[0]
     dy = p2[1]-p1[1]
@@ -55,15 +58,12 @@ def Line():
     x_inc = 1 if dx >= 0 else -1
     y_inc = 1 if dy >= 0 else -1
 
-    print(x_inc)
-    print(y_inc)
     stepsize = p2[0]-x
     if (abs(m) >= 1):
         stepsize = p2[1]-y
         x, y = y, x
         x_inc, y_inc = y_inc, x_inc
         dx, dy = dy, dx
-    print(stepsize)
     if dy >= 0:
         dx = dx if dx >= 0 else abs(dx)
         dy = dy if dx >= 0 else abs(dy)
@@ -84,27 +84,28 @@ def Line():
     pk = p0
     while (iteration != stepsize):
         x = x + x_inc
+        plk = pk
         if pk < 0:
             y = y+yl_inc
-
-            # print(y, x)
             if (abs(m) >= 1):
-                print(y, x)
+                plx, ply = y, x
                 Plot(y, x, 'l')
             else:
-                print(x, y)
+                plx, ply = x, y
                 Plot(x, y, 'l')
             pk = pk + pkl_inc
         else:
             y = y + ym_inc
 
             if (abs(m) >= 1):
-                print(y, x)
+                plx, ply = y, x
                 Plot(y, x, 'l')
             else:
-                print(x, y)
+                plx, ply = x, y
                 Plot(x, y, 'l')
             pk = pk + pkm_inc
+        mytable.add_row(
+            [abs(iteration), plk, (plx, ply)])
         iteration = iteration + x_inc
 
 
@@ -113,7 +114,7 @@ def BLA():
     glClear(GL_COLOR_BUFFER_BIT)
     Points()
     Line()
-
+    print(mytable)
     glFlush()
 
 
@@ -121,7 +122,7 @@ def main():
     glutInit()
     glutInitDisplayMode(GLUT_RGB)
     glutInitWindowSize(windowSize[0], windowSize[1])
-    glutInitWindowPosition(500, 50)
+    glutInitWindowPosition(600, 100)
     glutCreateWindow("Nirbhay Adhikari (02) BLA")
     glutDisplayFunc(BLA)
     glutMainLoop()
