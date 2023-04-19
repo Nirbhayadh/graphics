@@ -1,11 +1,13 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
-from math import ceil
+from prettytable import PrettyTable
 
 windowSize = (500, 500)
 division = 15
 x_stepsize = 2/division
 y_stepsize = 2/division
+
+mytable = PrettyTable(["Step", "Calculated (x,y)", "Plot (x,y)"])
 
 
 def Plot(x, y, g):
@@ -40,9 +42,8 @@ def Actual(p1, p2):
 
 
 def Line():
-
-    p2 = (1, 1)
-    p1 = (6, 10)
+    p1 = (10, 10)
+    p2 = (5, 4)
     Actual(p1, p2)
     dx = p2[0]-p1[0]
     dy = p2[1]-p1[1]
@@ -54,18 +55,16 @@ def Line():
     y_inc = dy/stepsize
     x = p1[0]
     y = p1[1]
-    print(x, y)
-    print("lund")
-    print(x_inc, y_inc)
+    print(f"Initial Point: ({x},{y})")
     Plot(x, y, 'l')
     iteration = 0
     while (iteration != stepsize):
         x = x + x_inc
         y = y + y_inc
 
-        print(x, y)
-        print(ceil(x), ceil(y))
-        Plot(ceil(x), ceil(y), 'l')
+        mytable.add_row(
+            [iteration+1, (round(x, 3), round(y, 3)), (round(x), round(y))])
+        Plot(round(x), round(y), 'l')
         iteration = iteration+1
 
 
@@ -74,6 +73,7 @@ def DDA():
     glClear(GL_COLOR_BUFFER_BIT)
     Points()
     Line()
+    print(mytable)
     glFlush()
 
 
@@ -81,7 +81,7 @@ def main():
     glutInit()
     glutInitDisplayMode(GLUT_RGB)
     glutInitWindowSize(windowSize[0], windowSize[1])
-    glutInitWindowPosition(300, 100)
+    glutInitWindowPosition(600, 100)
     glutCreateWindow("Nirbhay Adhikari (02) DDA")
     glutDisplayFunc(DDA)
     glutMainLoop()
