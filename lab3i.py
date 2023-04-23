@@ -1,11 +1,15 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 import math
+from prettytable import PrettyTable
 
 windowSize = (500, 500)
 division = 15
 x_stepsize = 2/division
 y_stepsize = 2/division
+
+mytable = PrettyTable(["K", "Pk", "(X_k+1, Y_k+1)",
+                      "2 * X_k+1", "2 * Y_k+1", "(X_k+1 + Cx, Y_k+1 + Cy)"])
 
 
 def Plot(x, y, g):
@@ -35,7 +39,7 @@ def Actual(cx, cy, radius):
     glPointSize(3.0)
     triangles = 100
     glBegin(GL_LINE_LOOP)
-    for i in range(0, 100):
+    for i in range(0, triangles):
         x = cx+radius*math.cos(i * 2*math.pi/triangles)
         y = cy+radius*math.sin(i * 2*math.pi/triangles)
         x = 0+x*x_stepsize
@@ -62,17 +66,20 @@ def Circle():
     radius = 4
     Actual(cx, cy, radius)
     x, y = ox, radius
+    print(f"Starting Point: ({x+cx},{y+cy})")
     PlotSymmetry(x, y, cx, cy)
-    p0 = 5/4-radius
+    p0 = 1-radius
     pk = p0
     while (x < y):
+        plk = pk
         x = x+1
         if (pk < 0):
             pk = pk+2*x+1
         else:
             y = y-1
             pk = pk+2*x+1-2*y
-        print(x, y)
+        mytable.add_row(
+            [x-1, plk, (x, y), 2 * x, 2 * y, (x+cx, y+cy)])
         PlotSymmetry(x, y, cx, cy)
 
 
@@ -80,6 +87,7 @@ def MIDCIRCLE():
     glClear(GL_COLOR_BUFFER_BIT)
     Points()
     Circle()
+    print(mytable)
     glFlush()
 
 
@@ -87,8 +95,8 @@ def main():
     glutInit()
     glutInitDisplayMode(GLUT_RGB)
     glutInitWindowSize(windowSize[0], windowSize[1])
-    glutInitWindowPosition(300, 100)
-    glutCreateWindow("Nirbhay Adhikari (02) DDA")
+    glutInitWindowPosition(600, 100)
+    glutCreateWindow("Nirbhay Adhikari (02) MIDCIRCLE")
     glutDisplayFunc(MIDCIRCLE)
     glutMainLoop()
 
